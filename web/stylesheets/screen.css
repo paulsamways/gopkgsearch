@@ -1,0 +1,44 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+  font-size: 14px;
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #FCFCFC;
+  color: #2D2D2D;
+}
+
+input#query {
+  padding: 2%;
+  margin: 2%;
+  border: 1px solid #CCC;
+  border-radius: .5em;
+  width: 92%;
+  font-size: 1.2em;
+}
+
+ul#results {
+  list-style-type: none;
+  margin: 0% 2%;
+  width: 96%;
+}
+
+ul#results > li {
+  padding: 2%;
+  margin-bottom: 2%;
+  border-radius: .5em;
+}
+
+ul#results > li.func {
+  background-color: #E9E9F3;
+}
+
+ul#results > li.type {
+  background-color: #E9F3E9;
+}
+
+ul#results > li.const {
+  background-color: #F3E9E9;
+}
