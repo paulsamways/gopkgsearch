@@ -10,10 +10,18 @@ body {
   color: #2D2D2D;
 }
 
+h1 {
+  font-size: 1.2em;
+  margin-bottom: 1em;
+}
+h2 {
+  font-size: 1.1em;
+}
+
 input#query {
   padding: 2%;
   margin: 2%;
-  border: 1px solid #CCC;
+  border: 2px solid #999;
   border-radius: .5em;
   width: 92%;
   font-size: 1.2em;
@@ -29,16 +37,30 @@ ul#results > li {
   padding: 2%;
   margin-bottom: 2%;
   border-radius: .5em;
+  cursor: pointer;
 }
 
-ul#results > li.func {
+ul#results > li.Function {
   background-color: #E9E9F3;
 }
 
-ul#results > li.type {
+ul#results > li.Struct {
   background-color: #E9F3E9;
 }
 
-ul#results > li.const {
+ul#results > li.Const {
   background-color: #F3E9E9;
+}
+
+ul#results > li > h2 > span.package {
+  color: #6D6D6D;
+}
+ul#results > li > div.doc {
+  margin-top: .5em;
+}
+ul#results > li > pre.source {
+  padding: .5em;
+  margin: 1.5em .5em .5em .5em;
+  background-color: #DDD;
+  border-radius: .25em;
 }

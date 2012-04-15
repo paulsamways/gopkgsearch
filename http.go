@@ -34,8 +34,12 @@ func writeJson(w http.ResponseWriter, o interface{}) bool {
 	return true
 }
 
+func isMatch(a, b string) bool {
+	return strings.Contains(strings.ToLower(a), strings.ToLower(b))
+}
+
 func query(w http.ResponseWriter, req *http.Request) {
-	result := make([]Element, 0)
+	result := make([]interface{}, 0)
 
 	queries := req.URL.Query()["q"]
 
@@ -54,15 +58,13 @@ func query(w http.ResponseWriter, req *http.Request) {
 
 	fmt.Printf("Package: '%s' - Object: '%s'\n", pkg, obj)
 
-	for _, v := range elements {
-		pkgMatch := true
-
-		if len(pkg) > 0 {
-			pkgMatch = strings.ToLower(v.ImportPath) == pkg
+	for _, e := range elements {
+		if len(pkg) > 0 && strings.ToLower(e.Package) != pkg {
+			continue
 		}
 
-		if pkgMatch && strings.Contains(strings.ToLower(v.Name), obj) {
-			result = append(result, v)
+		if isMatch(e.Name, obj) {
+			result = append(result, e)
 		}
 	}
 
