@@ -56,8 +56,6 @@ func query(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	fmt.Printf("Package: '%s' - Object: '%s'\n", pkg, obj)
-
 	for _, e := range elements {
 		if len(pkg) > 0 && strings.ToLower(e.Package) != pkg {
 			continue
@@ -65,6 +63,10 @@ func query(w http.ResponseWriter, req *http.Request) {
 
 		if isMatch(e.Name, obj) {
 			result = append(result, e)
+		}
+
+		if len(result) == 100 {
+			break
 		}
 	}
 

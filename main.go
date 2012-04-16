@@ -19,11 +19,11 @@ var elements []*Element
 func main() {
 	flag.Parse()
 
-	elements = Search(filepath.Join(goroot, "src/pkg"))
+	elements = index(filepath.Join(goroot, "src/pkg"))
 
 	if *useGoPaths {
 		for _, gp := range gopaths {
-			e := Search(filepath.Join(gp, "src"))
+			e := index(filepath.Join(gp, "src"))
 			elements = append(elements, e...)
 		}
 	}

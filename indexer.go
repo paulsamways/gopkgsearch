@@ -76,7 +76,7 @@ func getFilePath(fset *token.FileSet, path string, pos token.Pos) string {
 	return ""
 }
 
-func Search(base string) []*Element {
+func index(base string) []*Element {
 	elements := make([]*Element, 0)
 
 	filepath.Walk(base, func(path string, info os.FileInfo, err error) error {
