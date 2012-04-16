@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sort"
 	"strings"
+	"time"
 )
 
 func listen() {
@@ -34,12 +36,40 @@ func writeJson(w http.ResponseWriter, o interface{}) bool {
 	return true
 }
 
-func isMatch(a, b string) bool {
-	return strings.Contains(strings.ToLower(a), strings.ToLower(b))
+// Matches two values, returning a score 0..1. 0 no match, 1 exact match.
+func match(a, b string) float32 {
+	a = strings.ToLower(a)
+	b = strings.ToLower(b)
+
+	idx := strings.Index(a, b)
+
+	switch {
+	case idx == -1:
+		return 0
+	case idx == 0 && len(a) == len(b):
+		return 1
+	}
+
+	lenScore := 1.0 - (float32(len(a)-len(b)) / float32(len(a)))
+	posScore := float32(len(a)-idx) / float32(len(a))
+
+	return (lenScore + posScore) / 2.0
 }
 
+type score struct {
+	element *Element
+	score   float32
+}
+type scores []score
+
+func (s scores) Len() int           { return len(s) }
+func (s scores) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+func (s scores) Less(i, j int) bool { return s[i].score > s[j].score }
+
 func query(w http.ResponseWriter, req *http.Request) {
-	result := make([]interface{}, 0)
+	result := make(scores, 0)
+
+	start := time.Now()
 
 	queries := req.URL.Query()["q"]
 
@@ -61,14 +91,25 @@ func query(w http.ResponseWriter, req *http.Request) {
 			continue
 		}
 
-		if isMatch(e.Name, obj) {
-			result = append(result, e)
-		}
-
-		if len(result) == 100 {
-			break
+		if m := match(e.Name, obj); m > 0 {
+			result = append(result, score{e, m})
 		}
 	}
 
-	writeJson(w, result)
+	sort.Sort(result)
+
+	c := len(result)
+	if c > 50 {
+		c = 50
+	}
+
+	r := make([]*Element, c)
+
+	for i, v := range result[:c] {
+		r[i] = v.element
+	}
+
+	fmt.Printf("Found %d results in %s.\n", c, time.Since(start))
+
+	writeJson(w, r)
 }
