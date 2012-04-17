@@ -36,8 +36,12 @@ ul#results {
 ul#results > li {
   padding: 2%;
   margin-bottom: 2%;
+  border: 2px solid transparent;
   border-radius: .5em;
   cursor: pointer;
+}
+ul#results > li.selected {
+  border: 2px solid #39C;
 }
 
 ul#results > li.Function {
@@ -63,4 +67,5 @@ ul#results > li > pre.source {
   margin: 1.5em .5em .5em .5em;
   background-color: #DDD;
   border-radius: .25em;
+  word-wrap: break-word;
 }
