@@ -34,12 +34,12 @@ func (ek ElementKind) String() string {
 }
 
 type Element struct {
-	Package  string
-	FilePath string
-	Name     string
-	Kind     string
-	Source   string
-	Doc      string
+	Package, lowerPkg string
+	FilePath          string
+	Name, lowerName   string
+	Kind              string
+	Source            string
+	Doc               string
 }
 
 func printNode(fset *token.FileSet, node interface{}) string {
@@ -76,10 +76,14 @@ func getFilePath(fset *token.FileSet, path string, pos token.Pos) string {
 	return ""
 }
 
-func index(base string) []*Element {
+func index(base string) ([]*Element, error) {
 	elements := make([]*Element, 0)
 
-	filepath.Walk(base, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(base, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
 		if info.IsDir() {
 			if strings.ToLower(info.Name()) == "testdata" {
 				return filepath.SkipDir
@@ -98,7 +102,11 @@ func index(base string) []*Element {
 		return nil
 	})
 
-	return elements
+	if err != nil {
+		return nil, err
+	}
+
+	return elements, nil
 }
 
 func parse(path, basePath string) ([]*Element, error) {
@@ -143,12 +151,14 @@ func parse(path, basePath string) ([]*Element, error) {
 					}
 
 					e := Element{
-						Package:  pkg.Name,
-						FilePath: p,
-						Name:     n,
-						Kind:     ekFunction.String(),
-						Source:   s,
-						Doc:      d,
+						Package:   pkg.Name,
+						lowerPkg:  strings.ToLower(pkg.Name),
+						FilePath:  p,
+						Name:      n,
+						lowerName: strings.ToLower(n),
+						Kind:      ekFunction.String(),
+						Source:    s,
+						Doc:       d,
 					}
 
 					elements = append(elements, &e)
@@ -167,12 +177,14 @@ func parse(path, basePath string) ([]*Element, error) {
 						s := printNode(fset, tSpec)
 
 						e := Element{
-							Package:  pkg.Name,
-							FilePath: p,
-							Name:     tSpec.Name.Name,
-							Kind:     ekStruct.String(),
-							Source:   s,
-							Doc:      d,
+							Package:   pkg.Name,
+							lowerPkg:  strings.ToLower(pkg.Name),
+							FilePath:  p,
+							Name:      tSpec.Name.Name,
+							lowerName: strings.ToLower(tSpec.Name.Name),
+							Kind:      ekStruct.String(),
+							Source:    s,
+							Doc:       d,
 						}
 
 						elements = append(elements, &e)
@@ -190,12 +202,14 @@ func parse(path, basePath string) ([]*Element, error) {
 
 							for _, name := range vSpec.Names {
 								e := Element{
-									Package:  pkg.Name,
-									FilePath: p,
-									Name:     name.Name,
-									Kind:     ekConst.String(),
-									Source:   s,
-									Doc:      d,
+									Package:   pkg.Name,
+									lowerPkg:  strings.ToLower(pkg.Name),
+									FilePath:  p,
+									Name:      name.Name,
+									lowerName: strings.ToLower(name.Name),
+									Kind:      ekConst.String(),
+									Source:    s,
+									Doc:       d,
 								}
 
 								elements = append(elements, &e)

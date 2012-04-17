@@ -61,7 +61,7 @@ $(function() {
 
     submitTimer = setTimeout(function() {
       submitQuery($(self).val());
-    }, 250);
+    }, 50);
 
   });
 });

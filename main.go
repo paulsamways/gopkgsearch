@@ -19,12 +19,22 @@ var elements []*Element
 func main() {
 	flag.Parse()
 
-	elements = index(filepath.Join(goroot, "src/pkg"))
+	var err error
+
+	elements, err = index(filepath.Join(goroot, "src/pkg"))
+
+	if err != nil {
+		fmt.Printf("Couldn't index the Go packages. %s\n", err)
+		elements = make([]*Element, 0)
+	}
 
 	if *useGoPaths {
 		for _, gp := range gopaths {
-			e := index(filepath.Join(gp, "src"))
-			elements = append(elements, e...)
+			if e, err := index(filepath.Join(gp, "src")); err != nil {
+				fmt.Printf("Couldn't index the packages in %s. %s\n", filepath.Join(gp, "src"), err)
+			} else {
+				elements = append(elements, e...)
+			}
 		}
 	}
 

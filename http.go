@@ -38,20 +38,20 @@ func writeJson(w http.ResponseWriter, o interface{}) bool {
 
 // Matches two values, returning a score 0..1. 0 no match, 1 exact match.
 func match(a, b string) float32 {
-	a = strings.ToLower(a)
-	b = strings.ToLower(b)
-
 	idx := strings.Index(a, b)
 
-	switch {
-	case idx == -1:
+	if idx == -1 {
 		return 0
-	case idx == 0 && len(a) == len(b):
+	}
+
+	la, lb := float32(len(a)), float32(len(b))
+
+	if idx == 0 && la == lb {
 		return 1
 	}
 
-	lenScore := 1.0 - (float32(len(a)-len(b)) / float32(len(a)))
-	posScore := float32(len(a)-idx) / float32(len(a))
+	lenScore := 1.0 - ((la - lb) / la)
+	posScore := (la - float32(idx)) / la
 
 	return (lenScore + posScore) / 2.0
 }
@@ -87,11 +87,11 @@ func query(w http.ResponseWriter, req *http.Request) {
 	}
 
 	for _, e := range elements {
-		if len(pkg) > 0 && strings.ToLower(e.Package) != pkg {
+		if len(pkg) > 0 && e.lowerPkg != pkg {
 			continue
 		}
 
-		if m := match(e.Name, obj); m > 0 {
+		if m := match(e.lowerName, obj); m > 0 {
 			result = append(result, score{e, m})
 		}
 	}
