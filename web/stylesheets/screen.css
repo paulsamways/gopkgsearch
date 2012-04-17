@@ -55,6 +55,9 @@ ul#results > li.Struct {
 ul#results > li.Const {
   background-color: #F3E9E9;
 }
+ul#results > li.Interface {
+  background-color: #DD7;
+}
 
 ul#results > li > h2 > span.package {
   color: #6D6D6D;
@@ -64,8 +67,14 @@ ul#results > li > div.doc {
 }
 ul#results > li > pre.source {
   padding: .5em;
-  margin: 1.5em .5em .5em .5em;
+  margin: 1.5em .5em 1em .5em;
   background-color: #DDD;
   border-radius: .25em;
   word-wrap: break-word;
+}
+ul#results > li > div.path {
+  text-align: right;
+  font-style: italic;
+  color: #999;
+  font-size: .9em;
 }

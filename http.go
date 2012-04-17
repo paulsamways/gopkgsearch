@@ -77,21 +77,22 @@ func query(w http.ResponseWriter, req *http.Request) {
 	pkg := ""
 
 	if len(queries) > 0 {
-		obj = strings.ToLower(queries[0])
-		parts := strings.Split(obj, ".")
+		parts := strings.Split(queries[0], ".")
 
 		if len(parts) > 1 {
 			pkg = parts[0]
-			obj = parts[1]
+			obj = strings.ToLower(parts[1])
+		} else {
+			obj = strings.ToLower(parts[0])
 		}
 	}
 
 	for _, e := range elements {
-		if len(pkg) > 0 && e.lowerPkg != pkg {
+		if len(pkg) > 0 && e.Package != pkg {
 			continue
 		}
 
-		if m := match(e.lowerName, obj); m > 0 {
+		if m := match(e.name, obj); m > 0 {
 			result = append(result, score{e, m})
 		}
 	}

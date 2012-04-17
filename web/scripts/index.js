@@ -6,6 +6,7 @@ $(function() {
   var _KEYSPACE = 32;
 
   var submitTimer = null;
+  var prevQ = null;
   
   var $results = $("#results");
   var $input = $("#query");
@@ -26,6 +27,7 @@ $(function() {
               "<h2 title=\"" + r.FilePath + "\"><span class=\"package\">" + r.Package + "</span>." + r.Name + "</h2>" +
               "<div style=\"display: none;\" class=\"doc\">" + escapeHtml(r.Doc) + "</div>" +
               "<pre style=\"display: none;\" class=\"source\">" + escapeHtml(r.Source) + "</pre>" +
+              "<div style=\"display: none;\" class=\"path\">" + escapeHtml(r.FilePath) + "</div>" +
             "</li>";
   };
 
@@ -77,7 +79,7 @@ $(function() {
       $li = $("li.selected", $results);
     }
 
-    $("div.doc, pre.source", $li).toggle();
+    $("div.doc, pre.source, div.path", $li).toggle();
   };
 
   var submitQuery = function(q) {
@@ -128,6 +130,13 @@ $(function() {
     }
 
     submitTimer = setTimeout(function() {
+      var q = $(self).val();
+
+      if (prevQ === q) {
+        return;
+      }
+
+      prevQ = q;
       submitQuery($(self).val());
     }, 50);
   });
