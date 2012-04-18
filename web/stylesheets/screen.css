@@ -47,13 +47,17 @@ ul#results > li.selected {
 ul#results > li.Function {
   background-color: #E9E9F3;
 }
-
 ul#results > li.Struct {
   background-color: #E9F3E9;
 }
-
+ul#results > li.Type {
+  background-color: #F9E9E9;
+}
 ul#results > li.Const {
   background-color: #F3E9E9;
+}
+ul#results > li.Variable {
+  background-color: #F2E6FF;
 }
 ul#results > li.Interface {
   background-color: #DD7;

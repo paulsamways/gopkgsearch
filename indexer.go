@@ -17,8 +17,10 @@ type ElementKind int
 const (
 	ekFunction ElementKind = iota
 	ekStruct
-	ekConst
 	ekInterface
+	ekType
+	ekConst
+	ekVariable
 )
 
 func (ek ElementKind) String() string {
@@ -27,10 +29,14 @@ func (ek ElementKind) String() string {
 		return "Function"
 	case ekStruct:
 		return "Struct"
-	case ekConst:
-		return "Const"
 	case ekInterface:
 		return "Interface"
+	case ekType:
+		return "Type"
+	case ekConst:
+		return "Const"
+	case ekVariable:
+		return "Variable"
 	}
 
 	return ""
@@ -192,32 +198,13 @@ func indexGen(mE makeElement, fset *token.FileSet, t *ast.GenDecl) []*Element {
 			indexType(e, fset, t, tSpec)
 			es = append(es, e)
 		}
-	case token.CONST:
-		//d := ""
-		//if t.Doc != nil {
-		//  d = t.Doc.Text()
-		//}
-
-		//s := printNode(fset, t)
-
-		//for _, spec := range t.Specs {
-		//  vSpec := spec.(*ast.ValueSpec)
-
-		//  for _, name := range vSpec.Names {
-		//    e := Element{
-		//      Package:   pkg.Name,
-		//      lowerPkg:  strings.ToLower(pkg.Name),
-		//      FilePath:  p,
-		//      Name:      name.Name,
-		//      lowerName: strings.ToLower(name.Name),
-		//      Kind:      ekConst.String(),
-		//      Source:    s,
-		//      Doc:       d,
-		//    }
-
-		//    elements = append(elements, &e)
-		//  }
-		//}
+	case token.CONST, token.VAR:
+		for _, spec := range t.Specs {
+			vSpec := spec.(*ast.ValueSpec)
+			e := mE()
+			indexConstOrVar(e, fset, t, vSpec)
+			es = append(es, e)
+		}
 	}
 
 	return es
@@ -239,11 +226,28 @@ func indexType(e *Element, fset *token.FileSet, d *ast.GenDecl, t *ast.TypeSpec)
 	switch t.Type.(type) {
 	case *ast.InterfaceType:
 		e.Kind = ekInterface.String()
-	default:
+	case *ast.StructType:
 		e.Kind = ekStruct.String()
+	default:
+		e.Kind = ekType.String()
 	}
 }
 
-func indexConst(e *Element, fset *token.FileSet, d *ast.GenDecl, v *ast.ValueSpec) {
+func indexConstOrVar(e *Element, fset *token.FileSet, d *ast.GenDecl, v *ast.ValueSpec) {
+	if v.Doc != nil {
+		e.Doc = v.Doc.Text()
+	} else if d.Doc != nil {
+		e.Doc = d.Doc.Text()
+	}
 
+	e.Source = printNode(fset, v)
+	e.Name = v.Names[0].Name // AFAIK this is always len == 1 for consts
+	e.name = strings.ToLower(e.Name)
+
+	switch d.Tok {
+	case token.CONST:
+		e.Kind = ekConst.String()
+	case token.VAR:
+		e.Kind = ekVariable.String()
+	}
 }
