@@ -19,6 +19,8 @@ var elements []*Element
 func main() {
 	flag.Parse()
 
+	fmt.Println("Indexing...")
+
 	var err error
 
 	elements, err = index(filepath.Join(goroot, "src/pkg"))
