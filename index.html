@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Gopkgsearch by PaulSamways</title>
+    
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Gopkgsearch</h1>
+        <p>Go Package Searching</p>
+        <p class="view"><a href="https://github.com/PaulSamways/gopkgsearch">View the Project on GitHub <small>PaulSamways/gopkgsearch</small></a></p>
+        <ul>
+          <li><a href="https://github.com/PaulSamways/gopkgsearch/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/PaulSamways/gopkgsearch/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/PaulSamways/gopkgsearch">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p>Instant searching of the packages in GOROOT/src/pkg and GOPATH.</p>
+
+<h2>Prerequisites</h2>
+
+<p>Gopkgsearch requires that the Go source code is available on the machine and that the GOROOT environment variable has been set. See <a href="http://golang.org/doc/install/source#environment">http://golang.org/doc/install/source#environment</a></p>
+
+<h2>Installation</h2>
+
+<p>Gopkgsearch can be fetched using 'go get':</p>
+
+<p><code>go get github.com/PaulSamways/gopkgsearch</code></p>
+
+<h2>Usage</h2>
+
+<p>Starting Gopkgsearch without any parameters will cause the Go source files to be indexed and a web server to be started on port 8000. If you want to have your GOPATH directories indexed as well then the -useGoPath option can be used.</p>
+
+<p><code>./gopkgsearch [-useGoPath=true]</code></p>
+
+<p>Once Gopkgsearch has been started, open a web browser to localhost:8000 and start searching.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/PaulSamways">PaulSamways</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
