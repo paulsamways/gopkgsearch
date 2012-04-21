@@ -14,7 +14,7 @@ Gopkgsearch can be fetched using 'go get':
 
 Starting Gopkgsearch without any parameters will cause the Go source files to be indexed and a web server to be started on port 8000. If you want to have your GOPATH directories indexed as well then the -useGoPath option can be used.
 
-  `./gopkgsearch [-useGoPath=true]`
+  `./gopkgsearch [-usegopath=true]`
 
 Once Gopkgsearch has been started, open a web browser to localhost:8000 and start searching.
 
