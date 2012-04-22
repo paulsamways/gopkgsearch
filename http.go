@@ -1,6 +1,8 @@
 package main
 
 import (
+	"path/filepath"
+	"go/build"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -10,8 +12,19 @@ import (
 	"time"
 )
 
+const importpath = "github.com/PaulSamways/gopkgsearch"
+
+func webdir() string {
+	pkg, err := build.Import(importpath, "", build.FindOnly)
+	if err != nil {
+		log.Printf("Couldn't determine web directory: %s", err)
+		return "./web"
+	}
+	return filepath.Join(pkg.Dir, "web")
+}
+
 func listen() {
-	http.Handle("/", http.FileServer(http.Dir("./web")))
+	http.Handle("/", http.FileServer(http.Dir(webdir())))
 	http.HandleFunc("/query", query)
 
 	err := http.ListenAndServe(*addr, nil)
