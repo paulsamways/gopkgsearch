@@ -1,12 +1,12 @@
 package main
 
 import (
-	"path/filepath"
-	"go/build"
 	"encoding/json"
 	"fmt"
+	"go/build"
 	"log"
 	"net/http"
+	"path/filepath"
 	"sort"
 	"strings"
 	"time"
@@ -88,20 +88,30 @@ func query(w http.ResponseWriter, req *http.Request) {
 
 	obj := ""
 	pkg := ""
+	recv := ""
 
 	if len(queries) > 0 {
 		parts := strings.Split(queries[0], ".")
 
-		if len(parts) > 1 {
+		switch len(parts) {
+		case 1:
+			obj = strings.ToLower(parts[0])
+		case 2:
 			pkg = parts[0]
 			obj = strings.ToLower(parts[1])
-		} else {
-			obj = strings.ToLower(parts[0])
+		case 3:
+			pkg = parts[0]
+			recv = strings.ToLower(parts[1])
+			obj = strings.ToLower(parts[2])
 		}
 	}
 
 	for _, e := range elements {
 		if len(pkg) > 0 && e.Package != pkg {
+			continue
+		}
+
+		if len(recv) > 0 && e.recv != recv && e.name != recv {
 			continue
 		}
 

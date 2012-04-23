@@ -49,6 +49,7 @@ type Element struct {
 	Kind       string
 	Source     string
 	Doc        string
+	recv       string
 }
 
 func printNode(fset *token.FileSet, node interface{}) string {
@@ -184,6 +185,16 @@ func indexFunc(e *Element, fset *token.FileSet, t *ast.FuncDecl) {
 
 	if t.Recv != nil {
 		e.Name += " " + printFieldList(fset, t.Recv)
+
+		expr := t.Recv.List[0].Type
+
+		switch exprT := expr.(type) {
+		case *ast.Ident:
+			e.recv = strings.ToLower(exprT.Name)
+		case *ast.StarExpr:
+			ident := exprT.X.(*ast.Ident)
+			e.recv = strings.ToLower(ident.Name)
+		}
 	}
 }
 
