@@ -18,3 +18,4 @@ Starting Gopkgsearch without any parameters will cause the Go source files to be
 
 Once Gopkgsearch has been started, open a web browser to localhost:8000 and start searching.
 
+![Screenshot of Gopkgsearch](http://paulsamways.github.com/gopkgsearch/images/gopkgsearch.gif)
