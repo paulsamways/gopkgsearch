@@ -26,6 +26,14 @@ Indexing of the source files in the GOPATH directories can be enabled by using t
 
 After the GoPkgSearch server has finished indexing the source files and the web server has been started, open up a browser and navigate to the web application, by default http://localhost:8000.
 
+Modes:
+
+`join`: Find all types or methods that contain the word 'join'.
+
+`utf8.rune`: Searching only in the utf8 package, find all types of methods that contain the word 'rune'.
+
+`http.request.form`: Searching only in the http.Request type, find all methods that contain the word 'form'.
+
 ## Screenshot
 
 ![Screenshot of Gopkgsearch](http://paulsamways.github.com/gopkgsearch/images/gopkgsearch.gif)
