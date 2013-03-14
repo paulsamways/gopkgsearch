@@ -1,8 +1,10 @@
-Instant searching of the packages in GOROOT/src/pkg and GOPATH.
+Web application for searching the packages in $GOROOT/src/pkg and $GOPATH.
 
 ## Prerequisites
 
-Gopkgsearch requires that the Go source code is available on the machine and that the GOROOT environment variable has been set. See http://golang.org/doc/install/source#environment
+Gopkgsearch requires that the Go source code is available on the machine and that the GOROOT environment variable has been set. 
+
+See http://golang.org/doc/install/source#environment
 
 ## Installation
 
@@ -12,10 +14,18 @@ Gopkgsearch can be fetched using 'go get':
 
 ## Usage
 
-Starting Gopkgsearch without any parameters will cause the Go source files to be indexed and a web server to be started on port 8000. If you want to have your GOPATH directories indexed as well then the -useGoPath option can be used.
+### Starting the server
+
+When GoPkgSearch is launched without any parameters, the Go stdlib source files will indexed and the web application started.
+
+Indexing of the source files in the GOPATH directories can be enabled by using the '-useGoPath' option.
 
   `./gopkgsearch [-usegopath=true]`
 
-Once Gopkgsearch has been started, open a web browser to localhost:8000 and start searching.
+### Using the client
+
+After the GoPkgSearch server has finished indexing the source files and the web server has been started, open up a browser and navigate to the web application, by default http://localhost:8000.
+
+## Screenshot
 
 ![Screenshot of Gopkgsearch](http://paulsamways.github.com/gopkgsearch/images/gopkgsearch.gif)
