@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-const importpath = "github.com/PaulSamways/gopkgsearch"
+const importpath = "github.com/paulsamways/gopkgsearch"
 
 func webdir() string {
 	pkg, err := build.Import(importpath, "", build.FindOnly)
